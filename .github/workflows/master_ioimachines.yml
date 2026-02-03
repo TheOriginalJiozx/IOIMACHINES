@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install frontend dependencies
-        run: npm ci --prefix frontend
+      - name: "Install frontend dependencies (temporary: use npm install)"
+        run: npm install --prefix frontend
 
       - name: Build frontend
         run: npm run build --prefix frontend
