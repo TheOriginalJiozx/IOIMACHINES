@@ -50,4 +50,4 @@ jobs:
           app-name: 'ioimachines'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_1234 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E2FC0E5ACF6E4D23801B8A5B8A3FEFAC }}
