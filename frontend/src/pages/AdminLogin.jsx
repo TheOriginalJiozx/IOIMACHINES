@@ -28,16 +28,16 @@ export default function AdminLogin(){
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md bg-white rounded-lg shadow p-8">
-        <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-sm sm:max-w-md bg-white rounded-lg shadow p-6 sm:p-8">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Admin Login</h2>
         <form onSubmit={submit}>
           <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input value={email} onChange={e=>setEmail(e.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-2" type="email" />
+          <input value={email} onChange={e=>setEmail(e.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-3 text-sm" type="email" />
           <label className="block text-sm font-medium text-gray-700">Adgangskode</label>
-          <input value={password} onChange={e=>setPassword(e.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-2" type="password" />
+          <input value={password} onChange={e=>setPassword(e.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-3 text-sm" type="password" />
           {error && <div className="text-red-600 text-sm mb-3">{error}</div>}
-          <button type="submit" disabled={loading} className="w-full bg-[#444444] text-white py-2 rounded">
+          <button type="submit" disabled={loading} className="w-full bg-[#444444] text-white py-3 rounded text-sm">
             {loading ? 'Logger ind...' : 'Log ind'}
           </button>
         </form>

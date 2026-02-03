@@ -11,7 +11,9 @@ export default function Nav() {
       const path = window.location.pathname.replace('/', '') || 'Home';
       const idx = navLinks.findIndex(n => n.toLowerCase().includes(path.toLowerCase()));
       if (idx >= 0) setActive(idx);
-    } catch (e) {}
+    } catch (error) {
+      alert(error.message || error.toString());
+    }
   }, []);
 
   return (
@@ -20,7 +22,7 @@ export default function Nav() {
         <a href="/" className="flex items-center">
           <img src="/ioimachines_logo.png" alt="IOIMachines logo" className="w-32 h-32 md:w-40 md:h-40 object-contain" />
         </a>
-        <button onClick={()=>setOpen(o=>!o)} className="ml-auto block md:hidden p-2 rounded focus:outline-none z-50" aria-label="Toggle menu">
+        <button onClick={()=>setOpen(open=>!open)} className="ml-auto block md:hidden p-2 rounded focus:outline-none z-50" aria-label="Toggle menu">
           <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={open? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} /></svg>
         </button>
 
@@ -40,9 +42,6 @@ export default function Nav() {
               </span>
             );
           })}
-          <span className="flex items-center">
-            <a href="/admin" className="py-2 px-4 text-sm text-[#444444] hover:underline">Admin</a>
-          </span>
         </div>
       </div>
 

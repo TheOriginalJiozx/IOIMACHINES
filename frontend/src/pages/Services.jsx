@@ -47,13 +47,13 @@ export default function Services() {
   return (
     <div className="min-h-screen bg-white text-[#444444] font-sans">
       <section className="relative w-full">
-        <div className="w-full h-full md:h-200 bg-gray-100 overflow-hidden">
+        <div className="w-full h-48 sm:h-64 md:h-80 bg-gray-100 overflow-hidden">
           <img src="/services.jpg" alt="hero" className="object-cover w-full h-full" />
         </div>
         <div className="absolute inset-0 flex items-center">
-          <div className="max-w-6xl mx-auto px-6 w-full flex items-center">
-            <div className="lg:pl-0 -mt-80">
-              <h1 className="lg:text-[38px] font-extrabold text-white uppercase" style={{ filter: "drop-shadow(0 8px 8px rgba(0,0,0,0.50))" }}>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full">
+            <div className="lg:pl-0">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white uppercase" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }}>
                 Services Offered
               </h1>
             </div>
@@ -66,25 +66,25 @@ export default function Services() {
       <section className="border-text border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-3xl font-bold text-center">Services</h2>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {cards.map(({ title, desc, icon }, i) => (
-              <div key={title} className="bg-white rounded-lg p-6 shadow-sm flex items-start space-x-4 enter-up pop" style={{ "--i": i }}>
-                <div className="w-16 h-16 flex-shrink-0 rounded-[58px] border border-black bg-[#D6D6D6] flex items-center justify-center text-gray-500 overflow-hidden">
+              <div key={title} className="bg-white rounded-lg p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4 enter-up pop" style={{ "--i": i }}>
+                <div className="w-16 h-16 flex-shrink-0 rounded-full border border-black bg-[#D6D6D6] flex items-center justify-center text-gray-500 overflow-hidden">
                   {title === "Long-Term Partnership & Support" ? (
-                    <i className="fas fa-handshake text-white text-3xl icon-tilt" aria-hidden="true" style={{ filter: "drop-shadow(0 8px 8px rgba(0,0,0,0.50))" }}></i>
+                    <i className="fas fa-handshake text-white text-2xl icon-tilt" aria-hidden="true" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }}></i>
                   ) : title === "System Maintenance & Upgrades" ? (
-                    <i className="fas fa-tools text-white text-3xl icon-tilt" aria-hidden="true" style={{ filter: "drop-shadow(0 8px 8px rgba(0,0,0,0.50))" }}></i>
+                    <i className="fas fa-tools text-white text-2xl icon-tilt" aria-hidden="true" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }}></i>
                   ) : title === "IP Core Licensing" ? (
-                    <i className="fas fa-lock text-white text-3xl icon-tilt" aria-hidden="true" style={{ filter: "drop-shadow(0 8px 8px rgba(0,0,0,0.50))" }}></i>
+                    <i className="fas fa-lock text-white text-2xl icon-tilt" aria-hidden="true" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }}></i>
                   ) : title === "Training & Knowledge Transfer" ? (
-                    <i className="fas fa-user-graduate text-white text-3xl icon-tilt" aria-hidden="true" style={{ filter: "drop-shadow(0 8px 8px rgba(0,0,0,0.50))" }}></i>
+                    <i className="fas fa-user-graduate text-white text-2xl icon-tilt" aria-hidden="true" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }}></i>
                   ) : (
                     <span className="w-8 h-8 block" aria-hidden="true" />
                   )}
                 </div>
 
                 <div className="flex-1 text-left">
-                  <h3 className="font-semibold">{title}</h3>
+                  <h3 className="font-semibold text-base">{title}</h3>
                   <p className="mt-2 text-sm text-[#606060] whitespace-pre-line">{desc}</p>
                   <button
                     type="button"

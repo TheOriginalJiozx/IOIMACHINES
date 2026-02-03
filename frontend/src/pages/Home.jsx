@@ -45,24 +45,18 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-[#444444] font-sans">
-      <section className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-8 items-center">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid md:grid-cols-2 gap-6 items-center">
         <div>
-          <h1 className="text-[38px] md:text-5xl font-extrabold text-text-[#444444] leading-tight">
-            Smarter Vision for
-            <br /> Smarter Machines
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#444444] leading-tight">
+            Smarter Vision for Smarter Machines
           </h1>
-          <p className="text-[16px] mt-6 text-gray-[#929292] max-w-xl">
-            IOIMACHINES delivers intelligent machine vision systems that help
-            <br />
-            manufacturers detect defects, ensure product quality,
-            <br />
-            and improve safety — in real time, at production speed.
-            <br />
+          <p className="text-sm sm:text-base mt-4 text-gray-600 max-w-xl">
+            IOIMACHINES delivers intelligent machine vision systems that help manufacturers detect defects, ensure product quality and improve safety — in real time, at production speed.
           </p>
-          <button className="mt-8 bg-[#444444] text-white px-6 py-3 rounded shadow">READ MORE</button>
+          <button className="mt-6 bg-[#444444] text-white px-5 py-2 rounded shadow text-sm">READ MORE</button>
         </div>
-        <div className="flex justify-center md:justify-end">
-          <div className="w-full max-w-2xl h-64 md:h-96 bg-gray-100 overflow-hidden flex items-center justify-center">
+        <div className="flex justify-center md:justify-end mt-4 md:mt-0">
+          <div className="w-full max-w-2xl h-56 sm:h-64 md:h-96 bg-gray-100 overflow-hidden flex items-center justify-center rounded">
             <img src="/ioimachinesbanner.jpg" alt="hero" className="object-cover w-full h-full" />
           </div>
         </div>
@@ -73,13 +67,19 @@ export default function Home() {
       <section className="border-text border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-3xl font-bold text-center">Our Technology</h2>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
-                {cards.map(({ title, desc, icon }, i) => (
-                <div key={title} className="bg-white rounded-lg p-6 shadow-sm flex items-start space-x-4 enter-up pop" style={{ '--i': i }}>
-                <div className="w-16 h-16 flex-shrink-0 rounded-[58px] border border-black bg-[#D6D6D6] flex items-center justify-center text-gray-500 overflow-hidden">{icon ? <img src={icon} alt={`${title} icon`} className="w-60 h-60 object-contain" style={{ filter: "drop-shadow(0 8px 8px rgba(0,0,0,0.50))" }} /> : <span className="w-8 h-8 block" aria-hidden="true" />}</div>
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {cards.map(({ title, desc, icon }, i) => (
+              <div key={title} className="bg-white rounded-lg p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4 enter-up pop" style={{ '--i': i }}>
+                <div className="w-16 h-16 flex-shrink-0 rounded-full border border-black bg-[#D6D6D6] flex items-center justify-center text-gray-500 overflow-hidden">
+                  {icon ? (
+                    <img src={icon} alt={`${title} icon`} className="w-10 h-10 object-contain" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }} />
+                  ) : (
+                    <span className="w-8 h-8 block" aria-hidden="true" />
+                  )}
+                </div>
 
                 <div className="flex-1 text-left">
-                  <h3 className="font-semibold">{title}</h3>
+                  <h3 className="font-semibold text-base">{title}</h3>
                   <p className="mt-2 text-sm text-[#606060] whitespace-pre-line">{desc}</p>
                   <button
                     type="button"
