@@ -144,7 +144,7 @@ export default function Home() {
               </div>
             </div>
             
-              <div className="bg-white rounded-lg p-6 shadow flex items-start space-x-4 enter-up" style={{ ['--i']: 3 }}>
+              <div className="bg-white rounded-lg p-6 shadow flex items-start space-x-4 enter-up" style={{ '--i': 3 }}>
                 <div className="w-12 h-12 rounded-lg bg-[#F1F7FB] flex items-center justify-center text-[#0471AB]"><i className="fas fa-server"></i></div>
                 <div className="flex-1">
                   <h4 className="font-semibold text-black">Designed to Scale With You</h4>
