@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import Home from './pages/Home'
 import Services from './pages/Services'
 import AdminLogin from './pages/AdminLogin'
@@ -7,6 +8,11 @@ import Footer from './components/Footer'
 import './App.css'
 
 export default function App() {
+  const location = useLocation()
+  const [token] = useState(() => (typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null))
+
+  if (token && location.pathname === '/admin') return <Navigate to='/' replace />
+
   return (
     <>
       <Nav />

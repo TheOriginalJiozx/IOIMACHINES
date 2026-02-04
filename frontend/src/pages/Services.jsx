@@ -47,27 +47,25 @@ export default function Services() {
   return (
     <div className="min-h-screen bg-white text-[#444444] font-sans">
       <section className="relative w-full">
-        <div className="w-full h-48 sm:h-64 md:h-80 bg-gray-100 overflow-hidden">
+        <div className="w-full h-full md:h-200 bg-gray-100 overflow-hidden">
           <img src="/services.jpg" alt="hero" className="object-cover w-full h-full" />
         </div>
         <div className="absolute inset-0 flex items-center">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full">
-            <div className="lg:pl-0">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white uppercase" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }}>
-                Services Offered
-              </h1>
+          <div className="max-w-6xl mx-auto px-6 w-full flex items-center">
+            <div className="lg:pl-0 -mt-80">
+              <h1 className="lg:text-[38px] font-extrabold text-white uppercase" style={{filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))'}}>Services Offered</h1>
             </div>
           </div>
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="border-text border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-3xl font-bold text-center">Services</h2>
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {cards.map(({ title, desc, icon }, i) => (
+            {cards.map(({ title, desc }, i) => (
               <div key={title} className="bg-white rounded-lg p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4 enter-up pop" style={{ "--i": i }}>
                 <div className="w-16 h-16 flex-shrink-0 rounded-full border border-black bg-[#D6D6D6] flex items-center justify-center text-gray-500 overflow-hidden">
                   {title === "Long-Term Partnership & Support" ? (
@@ -104,7 +102,7 @@ export default function Services() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="bg-[#0471AB]">
         <div className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-8 items-start">
@@ -167,7 +165,7 @@ export default function Services() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -207,7 +205,7 @@ export default function Services() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="max-w-6xl mx-auto px-6 py-16">
         <h3 className="text-[36px] font-bold text-center text-[#606060]">GET ADVICE</h3>
@@ -236,7 +234,7 @@ export default function Services() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="bg-[#F7F6F6]">
         <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8 text-center">
@@ -266,7 +264,7 @@ export default function Services() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <ContactCase />
 

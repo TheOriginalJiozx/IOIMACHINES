@@ -2,23 +2,65 @@ import { useEffect, useState } from "react";
 import ContactCase from "../components/ContactCase";
 
 export default function Home() {
-  const cards = [
-    { title: "A Novel Approach", desc: "Historically, machine vision vendors relied \n on feature detection techniques to \n recognize objects and find abnormal...", icon: "/icon1.png" },
-    { title: "HW Enabled High Performance", desc: "The algorithm runs at extreme high speed to \n achieve real time inspection. Therefore, \n parts of the algorithm run on a GPU...", icon: "/icon2.png" },
-    { title: "The Right Solution", desc: "The method solves the problem of limited \n texture visibility on surfaces and provides \n invariance to large color variations...", icon: "/icon3.png" },
-    { title: "Application Areas", desc: "Our innovative method is applicable in \n several areas such as texture analysis, \n medical image analysis and visionbased...", icon: "/icon4.png" },
-  ];
+  const [cards, setCards] = useState([])
+
+  useEffect(() => {
+    let mounted = true
+    async function load() {
+      try {
+        const base = process.env.REACT_APP_API_BASE || ''
+        const url = base ? `${base}/api/cards` : '/api/cards'
+        const res = await fetch(url)
+        const count = res.headers.get('content-type') || ''
+        if (!res.ok) {
+          const text = await res.text().catch(() => '')
+          console.error('/api/cards failed', res.status, text.slice ? text.slice(0,300) : text)
+          return
+        }
+        if (count.includes('application/json')) {
+          const json = await res.json()
+          if (!mounted) return
+          setCards(json.map(card => ({ id: card.id, title: card.title, desc: card.desc || card.description, icon: card.icon })))
+        } else {
+          const text = await res.text().catch(() => '')
+          alert(`/api/cards returned unexpected content-type: ${count}\n\n${text.slice ? text.slice(0,300) : text}`)
+        }
+      } catch (error) {
+        alert(error.message || error.toString());
+      }
+    }
+    load()
+    return () => { mounted = false }
+  }, [])
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
+  const [modalTexts, setModalTexts] = useState({})
 
-  const modalTexts = {
-    "A Novel Approach": `Historically, machine vision vendors relied on feature detection techniques to recognize objects and find abnormal features in images of surfaces. These techniques are hardcoded. It meant that their solutions were only applicable in highly controlled environments, such as inspecting a single type of object on a production line. Machine Learning based machine vision systems are far more flexible today. A single system handles many object types. It also adapts itself to accommodate for changes in the nature of defects and variations in surface appearance. Moreover, it is deployable in a range of circumstances. IOIMACHINES invented a new method of distinguishing between normal and abnormal features in images of surfaces based on a Machine Learning approach.`,
-    "HW Enabled High Performance": `The algorithm runs at extreme high speed to achieve real time inspection. Therefore, Parts of the algorithm run on a GPU in a PC platform. The most critical part runs on a dedicated HW platform developed by IOIMACHINES. We also provide the SW solution as Software-as-a-service on the cloud.`,
-    "The Right Solution": `The method solves the problem of limited texture visibility on surfaces and provides invariance to large color variations and variations in appearance, patterns, orientation and scale.`,
-    "Application Areas": `Our innovative method is applicable in several areas such as Texture analysis, medical image analysis and vision based defect detection on surfaces of industrial objects.  The method is self-adaptive in the sense that it adapts itself to changes in appearance of both normal and defect surfaces.`,
-  };
+  useEffect(() => {
+    let mounted = true
+    async function loadModalTexts() {
+      try {
+        const base = process.env.REACT_APP_API_BASE || ''
+        const url = base ? `${base}/api/modal_texts` : '/api/modal_texts'
+        const res = await fetch(url)
+        const ct = res.headers.get('content-type') || ''
+        if (!res.ok) return
+        if (ct.includes('application/json')) {
+          const json = await res.json()
+          if (!mounted) return
+          const map = {}
+          json.forEach(m => { if (m.card_id) map[m.card_id] = m.content })
+          setModalTexts(map)
+        }
+      } catch (err) {
+        console.error('Error loading modal_texts', err)
+      }
+    }
+    loadModalTexts()
+    return () => { mounted = false }
+  }, [])
 
   useEffect(() => {
     if (typeof window !== "undefined" && typeof window.setPageTitle === "function") {
@@ -41,7 +83,7 @@ export default function Home() {
     els.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [cards]);
 
   return (
     <div className="min-h-screen bg-white text-[#444444] font-sans">
@@ -62,14 +104,14 @@ export default function Home() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="border-text border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-3xl font-bold text-center">Our Technology</h2>
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {cards.map(({ title, desc, icon }, i) => (
-              <div key={title} className="bg-white rounded-lg p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4 enter-up pop" style={{ '--i': i }}>
+            {cards.map(({ id, title, desc, icon }, i) => (
+              <div key={id ?? title} className="bg-white rounded-lg p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4 enter-up pop" style={{ '--i': i }}>
                 <div className="w-16 h-16 flex-shrink-0 rounded-full border border-black bg-[#D6D6D6] flex items-center justify-center text-gray-500 overflow-hidden">
                   {icon ? (
                     <img src={icon} alt={`${title} icon`} className="w-10 h-10 object-contain" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }} />
@@ -85,7 +127,7 @@ export default function Home() {
                     type="button"
                     onClick={() => {
                       setModalTitle(title);
-                      setModalBody(modalTexts[title] || desc);
+                      setModalBody(modalTexts[id] || desc);
                       setModalOpen(true);
                     }}
                     className="mt-3 inline-block text-sm text-[#606060] hover:underline"
@@ -99,7 +141,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="bg-[#0471AB]">
         <div className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-8 items-start">
@@ -161,7 +203,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -185,7 +227,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="max-w-6xl mx-auto px-6 py-16">
         <h3 className="text-[36px] font-bold text-center text-[#606060]">GET ADVICE</h3>
@@ -198,7 +240,7 @@ export default function Home() {
 
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 items-stretch">
           {["Send Us Sample Images", "On-Site Image Capture by Our Experts", "Live Algorithm Evaluation", "Review Results & Next"].map((text, i) => (
-            <div key={text} className="p-6 border rounded text-left h-full flex items-start">
+            <div card_id={text} className="p-6 border rounded text-left h-full flex items-start">
               <div className="flex items-start space-x-4">
                 <div className="w-10 h-10 bg-black text-white rounded flex items-center justify-center font-bold flex-shrink-0">{i + 1}</div>
                 <div className="flex-1">
@@ -214,7 +256,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <section className="bg-[#F7F6F6]">
         <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-8 text-center">
@@ -244,11 +286,11 @@ export default function Home() {
         </div>
       </section>
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       <ContactCase />
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
