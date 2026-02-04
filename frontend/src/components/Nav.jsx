@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = ["Home", "Services", "Case Studies", "About Us", "Contact", "Admin"];
 
@@ -7,37 +7,40 @@ export default function Nav() {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const location = useLocation();
 
   useEffect(() => {
     try {
-      // if admin is logged in, force Home active
-      if (localStorage.getItem('adminToken')) { setActive(0); return }
-      const path = window.location.pathname.replace("/", "") || "Home";
-      const idx = navLinks.findIndex((n) => n.toLowerCase().includes(path.toLowerCase()));
-      if (idx >= 0) setActive(idx);
+      const path = location.pathname === "/" ? "Home" : location.pathname.replace(/^\//, "");
+      const index = navLinks.findIndex((nav) => nav.toLowerCase().includes(path.toLowerCase()));
+      setActive(index >= 0 ? index : 0);
     } catch (error) {
-      alert(error.message || error.toString());
+      console.error(error);
     }
-  }, []);
+  }, [location]);
 
   useEffect(() => {
-    const check = () => setIsAdmin(!!localStorage.getItem('adminToken'))
-    check()
-    const onStorage = (e) => { if (e.key === 'adminToken') check(); }
-    const onCustom = () => check()
-    window.addEventListener('storage', onStorage)
-    window.addEventListener('admin-auth-changed', onCustom)
+    const check = () => setIsAdmin(!!localStorage.getItem("adminToken"));
+    check();
+    const onStorage = (e) => {
+      if (e.key === "adminToken") check();
+    };
+    const onCustom = () => check();
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("admin-auth-changed", onCustom);
     return () => {
-      window.removeEventListener('storage', onStorage)
-      window.removeEventListener('admin-auth-changed', onCustom)
-    }
-  }, [])
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("admin-auth-changed", onCustom);
+    };
+  }, []);
 
   function logout() {
-    localStorage.removeItem('adminToken')
-    window.dispatchEvent(new Event('admin-auth-changed'))
-    navigate('/')
+    localStorage.removeItem("adminToken");
+    window.dispatchEvent(new Event("admin-auth-changed"));
+    setActive(0);
+    navigate("/");
   }
 
   return (
@@ -54,7 +57,7 @@ export default function Nav() {
 
         <div className="hidden md:flex items-center ml-auto justify-end text-[14px] text-[#444444] font-semibold">
           {navLinks.map((link, index) => {
-            if (link === 'Admin' && isAdmin) return null
+            if (link === "Admin" && isAdmin) return null;
             const path = link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, "-").replace(/\/+$/, "")}`;
             return (
               <span key={link} className="flex items-center">
@@ -70,7 +73,9 @@ export default function Nav() {
             );
           })}
           {isAdmin ? (
-            <button onClick={logout} className="ml-4 bg-white border px-4 py-2 rounded text-sm text-[#444444] hover:bg-gray-100">Logout</button>
+            <button onClick={logout} className="ml-4 bg-white border px-4 py-2 rounded text-sm text-[#444444] hover:bg-gray-100">
+              Logout
+            </button>
           ) : null}
         </div>
       </div>
@@ -95,9 +100,19 @@ export default function Nav() {
               );
             })}
             {isAdmin ? (
-              <button onClick={() => { setOpen(false); logout(); }} className="w-full text-left block px-3 py-2 rounded text-base font-medium text-gray-700 hover:bg-gray-100">Logout</button>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  logout();
+                }}
+                className="w-full text-left block px-3 py-2 rounded text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </button>
             ) : (
-              <a href="/admin" className="block px-3 py-2 rounded text-base font-medium text-gray-700 hover:bg-gray-100">Admin</a>
+              <a href="/admin" className="block px-3 py-2 rounded text-base font-medium text-gray-700 hover:bg-gray-100">
+                Admin
+              </a>
             )}
           </div>
         </div>
