@@ -8,7 +8,7 @@ export default function Home() {
     let mounted = true
     async function load() {
       try {
-        const base = process.env.REACT_APP_API_BASE || ''
+        const base = process.env.REACT_APP_API_BASE || (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname.includes('azurestaticapps.net') ? 'https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net' : '')
         const url = base ? `${base}/api/cards` : '/api/cards'
         const res = await fetch(url)
         const count = res.headers.get('content-type') || ''
@@ -42,7 +42,7 @@ export default function Home() {
     let mounted = true
     async function loadModalTexts() {
       try {
-        const base = process.env.REACT_APP_API_BASE || ''
+        const base = process.env.REACT_APP_API_BASE || (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname.includes('azurestaticapps.net') ? 'https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net' : '')
         const url = base ? `${base}/api/modal_texts` : '/api/modal_texts'
         const res = await fetch(url)
         const ct = res.headers.get('content-type') || ''
