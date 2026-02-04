@@ -258,8 +258,8 @@ export default function Home() {
                   <p className="mt-3 text-sm text-black">{contents.what_p13 || ''}</p>
                   <ul className="mt-2 text-sm text-black list-inside pl-4 space-y-1">
                     <li className="flex items-start"><i className={contents.what_p14_icon || ''} aria-hidden="true"></i><span>{contents.what_p14}</span></li>
-                    <li className="flex items-start"><i className={contents.what_p15_icon || ''} aria-hidden="true"></i><span>{contents.what_p14}</span></li>
-                    <li className="flex items-start"><i className={contents.what_p16_icon || ''} aria-hidden="true"></i><span>{contents.what_p14}</span></li>
+                    <li className="flex items-start"><i className={contents.what_p15_icon || ''} aria-hidden="true"></i><span>{contents.what_p15}</span></li>
+                    <li className="flex items-start"><i className={contents.what_p16_icon || ''} aria-hidden="true"></i><span>{contents.what_p16}</span></li>
                   </ul>
                   <p className="mt-3 text-sm text-black">{contents.what_p17 || ''}</p>
                 </div>
