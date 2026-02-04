@@ -29,8 +29,8 @@ public class ContentBlockController {
             mm.put("id", callback.id);
             mm.put("key", callback.blockKey);
             mm.put("body", callback.body);
-            mm.put("icon", callback.icon);
             mm.put("sort_order", callback.sortOrder);
+            mm.put("icon", callback.icon);
             return mm;
         }).collect(Collectors.toList());
     }

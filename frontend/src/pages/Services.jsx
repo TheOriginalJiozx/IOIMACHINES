@@ -146,7 +146,7 @@ export default function Services() {
     <div className="min-h-screen bg-white text-[#444444] font-sans">
       <section className="relative w-full">
         <div className="w-full h-full md:h-200 bg-gray-100 overflow-hidden">
-            <img src={hero && hero.image_url ? hero.image_url : ''} className="object-cover w-full h-full" />
+          <img src={hero && hero.image_url ? hero.image_url : ''} alt={hero && hero.title ? hero.title : 'services hero'} className="object-cover w-full h-full" />
         </div>
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-6xl mx-auto px-6 w-full flex items-center">

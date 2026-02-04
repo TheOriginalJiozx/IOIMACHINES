@@ -155,7 +155,7 @@ export default function Home() {
         </div>
         <div className="flex justify-center md:justify-end mt-4 md:mt-0">
             <div className="w-full max-w-2xl h-56 sm:h-64 md:h-96 bg-gray-100 overflow-hidden flex items-center justify-center rounded">
-            <img src={hero && hero.image_url ? hero.image_url : ''} className="object-cover w-full h-full" />
+            <img src={hero && hero.image_url ? hero.image_url : ''} alt={hero && hero.title ? hero.title : 'hero image'} className="object-cover w-full h-full" />
           </div>
         </div>
       </section>
@@ -171,7 +171,7 @@ export default function Home() {
               <div key={id ?? title} className="bg-white rounded-lg p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4 enter-up pop" style={{ '--i': i }}>
                 <div className="w-16 h-16 flex-shrink-0 rounded-full border border-black bg-[#D6D6D6] flex items-center justify-center text-gray-500 overflow-hidden">
                   {icon ? (
-                    <img src={icon} className="w-10 h-10 object-contain" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }} />
+                    <img src={icon} alt={`${title} icon`} className="w-10 h-10 object-contain" style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.50))' }} />
                   ) : (
                     <span className="w-8 h-8 block" aria-hidden="true" />
                   )}
