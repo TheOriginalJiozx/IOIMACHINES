@@ -16,8 +16,7 @@ export default function ContactCase() {
     }
     setSending(true);
     try {
-      const getApiBase = (await import('../lib/apiBase')).default;
-      const API_BASE = getApiBase();
+      const API_BASE = process.env.REACT_APP_API_BASE || 'https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api';
       const res = await fetch(`${API_BASE}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -27,9 +26,9 @@ export default function ContactCase() {
       if (!res.ok) throw new Error(json.error || 'Failed');
       setStatus('Message sent — thank you.');
       setName(''); setEmail(''); setMessage('');
-    } catch (error) {
+    } catch (err) {
       setStatus('Error sending message');
-      alert('Error sending message: ' + error.message);
+      console.error(err);
     } finally { setSending(false); }
   }
 
