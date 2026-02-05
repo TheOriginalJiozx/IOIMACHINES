@@ -11,8 +11,10 @@ export default function Footer() {
     setLoading(true);
     try{
       const res = await fetch('/api/newsletter', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Failed');
+      const text = await res.text();
+      let json = {};
+      try { json = text ? JSON.parse(text) : {}; } catch (err) { /* ignore parse errors */ }
+      if (!res.ok) throw new Error(json.error || text || 'Failed');
       setStatus('Subscribed — thank you!'); setEmail('');
     }catch(e){
       setStatus(e.message || 'Error subscribing');

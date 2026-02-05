@@ -1,0 +1,8 @@
+{
+  "routes": [
+    {
+        "route": "/api/*",
+        "rewrite": "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api/{*}"
+      }
+  ]
+}
