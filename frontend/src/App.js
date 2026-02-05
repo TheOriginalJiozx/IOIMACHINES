@@ -6,6 +6,7 @@ import AdminLogin from './pages/AdminLogin'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import CaseStudies from './pages/CaseStudies'
+import Contact from './pages/Contact'
 import './App.css'
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/case-studies" element={<CaseStudies />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
     </>
