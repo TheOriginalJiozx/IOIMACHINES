@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ContactCase from "../components/ContactCase";
 
 export default function CaseStudies() {
-
   useEffect(() => {
     if (typeof window !== "undefined" && typeof window.setPageTitle === "function") {
       window.setPageTitle("Case Studies");
@@ -44,12 +43,26 @@ export default function CaseStudies() {
           <div className="md:col-span-2">
             <h2 className="text-3xl font-bold mb-4">Vision Inspection of Rotors for rotary screw air compressors</h2>
 
-            <div className="flex items-start gap-8 mb-6">
-              <div className="w-48 flex-shrink-0">
+            <div className="flex flex-col items-start gap-8 mb-6">
+              <div className="w-full max-w-xs md:max-w-sm flex-shrink-0 self-start">
                 <img src="/rotorsCompressor-e1566565817235.png" alt="case" className="object-contain w-full h-auto" />
               </div>
               <div className="flex-1 text-sm text-[#606060] whitespace-pre-line">
-                Rotors of rotary screw type air compressors have complex geometry. When they come out of grinding machines, various pores happen to appear on the surface. Some of these pores are big enough to consider as defects. These pores have arbitrary shapes and geometries and present a challenge to detect using conventional machine vision systems if they lie in shadowed areas caused by the geometry or at edges.
+                Rotors of rotary screw type air compressors have complex geometry. When they come out of grinding machines, various pores happen to appear on the surface.
+                <br />
+                Some of these pores are big enough to consider as defects. These pores have arbitrary shapes and geometries and present a challenge to detect using conventional machine vision systems if they lie in shadowed areas caused by the geometry or at edges.
+                <br />
+                IOIMACHINES demonstrated a solution for this problem. The solution is based on
+                <br />
+                advanced feature detection combined with powerful machine learning techniques.
+                <br />
+                The solution is tested on a collection of images of both good and bad rotors of different sizes and geometries. Test results show that we can achieve 100% accuracy in detecting all types of defects over a predefined size.
+                <br />
+                The solution distinguishes between types of defects and the system learned to distinguish real defects from oil films and droplets as well as air bubbles in dirty oil, shades and shavings.
+                <br />
+                In the solution, new types of defects and artifacts are learned quickly with minor intervention from qualified operators.
+                <br />
+                Main advantages seen by the customer are:
               </div>
             </div>
 
@@ -59,6 +72,10 @@ export default function CaseStudies() {
               <li>Zero escapements</li>
               <li>Seamless solution for different rotors of different shapes and sizes</li>
             </ul>
+
+            <div className="text-sm text-[#606060] mb-6">
+              The solution is provided for all types of grinded objects.
+            </div>
           </div>
 
           <aside className="md:col-span-1">
@@ -134,7 +151,7 @@ export default function CaseStudies() {
 
       <ContactCase />
 
-      <div class="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
+      <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
     </div>
   );
 }

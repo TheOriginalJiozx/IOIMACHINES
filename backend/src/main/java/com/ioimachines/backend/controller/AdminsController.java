@@ -7,8 +7,7 @@ import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.ioimachines.backend.security.JwtUtil;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ioimachines.backend.util.AdminSessionStore;
 
 import java.net.URI;
 
@@ -19,11 +18,11 @@ public class AdminsController {
 
     private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final JwtUtil jwtUtil;
+    private final AdminSessionStore sessionStore;
 
-    public AdminsController(AdminRepository adminRepository, JwtUtil jwtUtil) {
+    public AdminsController(AdminRepository adminRepository, AdminSessionStore sessionStore) {
         this.adminRepository = adminRepository;
-        this.jwtUtil = jwtUtil;
+        this.sessionStore = sessionStore;
     }
 
     @GetMapping("/{id}")
@@ -37,7 +36,7 @@ public class AdminsController {
             if (admin.password != null && passwordEncoder.matches(req.password, admin.password)) {
 
                 admin.password = null;
-                String token = jwtUtil.generateToken(admin);
+                String token = sessionStore.createSession(admin.id);
                 return ResponseEntity.ok(new LoginResponse(token, admin));
             }
             return ResponseEntity.status(401).body("invalid credentials");
@@ -45,65 +44,61 @@ public class AdminsController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> me(@RequestHeader(name = "Authorization", required = false) String auth) {
-        if (auth == null || !auth.startsWith("Bearer ")) return ResponseEntity.status(401).body("missing token");
-        try {
-            String token = auth.substring(7);
-            DecodedJWT decoded = jwtUtil.verify(token);
-            Long id = Long.valueOf(decoded.getSubject());
-            return adminRepository.findById(id).map(admin -> {
-                admin.password = null;
+    public ResponseEntity<?> me(@RequestHeader(name = "Authorization", required = false) String auth,
+                                @RequestHeader(name = "X-ADMIN-TOKEN", required = false) String headerToken) {
+        String token = null;
+        if (auth != null && auth.startsWith("Bearer ")) token = auth.substring(7);
+        if (token == null) token = headerToken;
+        Long adminId = sessionStore.validate(token);
+        if (adminId == null) return ResponseEntity.status(401).body("invalid token");
+        return adminRepository.findById(adminId).map(admin -> {
+            admin.password = null;
 
-                Map<String, Object> out = new HashMap<>();
-                out.put("id", admin.id);
-                out.put("email", admin.email);
-                out.put("admin", admin.admin);
-                return ResponseEntity.ok(out);
-            }).orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("invalid token");
-        }
+            Map<String, Object> out = new HashMap<>();
+            out.put("id", admin.id);
+            out.put("email", admin.email);
+            out.put("admin", admin.admin);
+            return ResponseEntity.ok(out);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestHeader(name = "Authorization", required = false) String auth, @RequestBody ChangePassword req) {
-        if (auth == null || !auth.startsWith("Bearer ")) return ResponseEntity.status(401).body("missing token");
-        try {
-            String token = auth.substring(7);
-            DecodedJWT decoded = jwtUtil.verify(token);
-            Long id = Long.valueOf(decoded.getSubject());
-            return adminRepository.findById(id).map(admin -> {
-                if (admin.password == null || !passwordEncoder.matches(req.currentPassword, admin.password)) {
-                    return ResponseEntity.status(400).body("current password incorrect");
-                }
-                if (req.newPassword == null || req.newPassword.length() < 6) {
-                    return ResponseEntity.status(400).body("new password too short");
-                }
-                admin.password = passwordEncoder.encode(req.newPassword);
-                adminRepository.save(admin);
-                return ResponseEntity.ok().build();
-            }).orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("invalid token");
-        }
+    public ResponseEntity<?> changePassword(@RequestHeader(name = "Authorization", required = false) String auth,
+                                            @RequestHeader(name = "X-ADMIN-TOKEN", required = false) String headerToken,
+                                            @RequestBody ChangePassword req) {
+        String token = null;
+        if (auth != null && auth.startsWith("Bearer ")) token = auth.substring(7);
+        if (token == null) token = headerToken;
+        Long adminId = sessionStore.validate(token);
+        if (adminId == null) return ResponseEntity.status(401).body("invalid token");
+        return adminRepository.findById(adminId).map(admin -> {
+            if (admin.password == null || !passwordEncoder.matches(req.currentPassword, admin.password)) {
+                return ResponseEntity.status(400).body("current password incorrect");
+            }
+            if (req.newPassword == null || req.newPassword.length() < 6) {
+                return ResponseEntity.status(400).body("new password too short");
+            }
+            admin.password = passwordEncoder.encode(req.newPassword);
+            adminRepository.save(admin);
+            return ResponseEntity.ok().build();
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/change-email")
-    public ResponseEntity<?> changeEmail(@RequestHeader(name = "Authorization", required = false) String auth, @RequestBody ChangeEmail req) {
-        if (auth == null || !auth.startsWith("Bearer ")) return ResponseEntity.status(401).body("missing token");
-        try {
-            String token = auth.substring(7);
-            DecodedJWT decoded = jwtUtil.verify(token);
-            Long id = Long.valueOf(decoded.getSubject());
-            return adminRepository.findById(id).map(admin -> {
-                if (req.newEmail == null || !req.newEmail.contains("@")) return ResponseEntity.status(400).body("invalid email");
-                admin.email = req.newEmail;
-                adminRepository.save(admin);
-                return ResponseEntity.ok().build();
-            }).orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("invalid token");
-        }
+    public ResponseEntity<?> changeEmail(@RequestHeader(name = "Authorization", required = false) String auth,
+                                         @RequestHeader(name = "X-ADMIN-TOKEN", required = false) String headerToken,
+                                         @RequestBody ChangeEmail req) {
+        String token = null;
+        if (auth != null && auth.startsWith("Bearer ")) token = auth.substring(7);
+        if (token == null) token = headerToken;
+        Long adminId = sessionStore.validate(token);
+        if (adminId == null) return ResponseEntity.status(401).body("invalid token");
+        return adminRepository.findById(adminId).map(admin -> {
+            if (req.newEmail == null || !req.newEmail.contains("@")) return ResponseEntity.status(400).body("invalid email");
+            admin.email = req.newEmail;
+            adminRepository.save(admin);
+            return ResponseEntity.ok().build();
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     public static class LoginRequest {
