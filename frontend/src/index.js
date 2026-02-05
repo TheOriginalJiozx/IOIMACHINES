@@ -5,16 +5,31 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
-);
+async function loadConfig() {
+  try {
+    const resp = await fetch('/api/config');
+    if (resp.ok) {
+      const json = await resp.json();
+      window.__APP_CONFIG__ = json || {};
+      return;
+    }
+  } catch (error) {
+    alert("Error loading config: " + error.message);
+  }
+  window.__APP_CONFIG__ = {};
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+async function start() {
+  await loadConfig();
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+  reportWebVitals();
+}
+
+start();

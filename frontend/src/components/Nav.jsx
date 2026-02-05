@@ -13,8 +13,13 @@ export default function Nav() {
 
   useEffect(() => {
     try {
-      const path = location.pathname === "/" ? "Home" : location.pathname.replace(/^\//, "");
-      const index = navLinks.findIndex((nav) => nav.toLowerCase().includes(path.toLowerCase()));
+      const pathname = location.pathname.replace(/^\/+|\/+$/g, "");
+      const slug = pathname.split("/")[0];
+
+      const index = navLinks.findIndex((nav) => {
+        const linkSlug = nav === "Home" ? "" : nav.toLowerCase().replace(/\s+/g, "-").replace(/\/+$/g, "");
+        return linkSlug === slug;
+      });
       setActive(index >= 0 ? index : 0);
     } catch (error) {
       alert("Navigation error: " + error.message);

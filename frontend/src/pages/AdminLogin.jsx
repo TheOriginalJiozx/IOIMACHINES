@@ -19,7 +19,8 @@ export default function AdminLogin() {
     }
     setLoading(true);
     try {
-      const API_BASE = 'https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api';
+      const getApiBase = (await import('../lib/apiBase')).default;
+      const API_BASE = getApiBase();
       const res = await fetch(`${API_BASE}/admins/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -27,9 +28,9 @@ export default function AdminLogin() {
       })
       const ct = res.headers.get('content-type') || ''
       if (!res.ok) {
-        let msg = await res.text()
-        try { if (ct.includes('application/json')) msg = JSON.parse(msg).error || JSON.parse(msg) } catch (e) {}
-        throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg))
+        let message = await res.text()
+        try { if (ct.includes('application/json')) message = JSON.parse(message).error || JSON.parse(message) } catch (e) {}
+        throw new Error(typeof message === 'string' ? message : JSON.stringify(message))
       }
       const data = ct.includes('application/json') ? await res.json() : null
       const token = data && data.token
