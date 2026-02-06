@@ -29,8 +29,8 @@ export default function Nav() {
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem("adminToken"));
     check();
-    const onStorage = (e) => {
-      if (e.key === "adminToken") check();
+    const onStorage = (event) => {
+      if (event.key === "adminToken") check();
     };
     const onCustom = () => check();
     window.addEventListener("storage", onStorage);

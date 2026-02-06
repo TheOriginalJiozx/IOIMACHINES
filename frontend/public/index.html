@@ -28,7 +28,7 @@
       window.setPageTitle = function(pageTitle) {
         try {
           document.title = `IOIMACHINES – ${pageTitle}`;
-        } catch (e) {
+        } catch (error) {
           document.title = 'IOIMACHINES – ' + (pageTitle || '');
         }
       };

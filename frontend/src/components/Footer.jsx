@@ -1,25 +1,35 @@
 import { useState } from "react";
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
 
-  async function handleSubscribe(){
-    setStatus('');
-    if (!email || !email.includes('@')) { setStatus('Please enter a valid email'); return }
+  async function handleSubscribe() {
+    setStatus("");
+    if (!email || !email.includes("@")) {
+      setStatus("Please enter a valid email");
+      return;
+    }
     setLoading(true);
-    try{
-      const API_BASE = process.env.REACT_APP_API_BASE || 'https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api';
-      const res = await fetch(`${API_BASE}/newsletter`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+    try {
+      const API_BASE = process.env.REACT_APP_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
+      const res = await fetch(`${API_BASE}/newsletter`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
       const text = await res.text();
       let json = {};
-      try { json = text ? JSON.parse(text) : {}; } catch (err) { /* ignore parse errors */ }
-      if (!res.ok) throw new Error(json.error || text || 'Failed');
-      setStatus('Subscribed — thank you!'); setEmail('');
-    }catch(e){
-      setStatus(e.message || 'Error subscribing');
-    }finally{ setLoading(false) }
+      try {
+        json = text ? JSON.parse(text) : {};
+      } catch (err) {
+        /* ignore parse errors */
+      }
+      if (!res.ok) throw new Error(json.error || text || "Failed");
+      setStatus("Subscribed — thank you!");
+      setEmail("");
+    } catch (error) {
+      setStatus(error.message || "Error subscribing");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -45,33 +55,54 @@ export default function Footer() {
           </div>
 
           <div className="w-full sm:w-auto">
-            <label htmlFor="newsletter-email" className="text-sm text-[#929292] font-medium block sm:inline">Get the Newsletter</label>
-            <form className="flex items-center mt-2 sm:mt-0" onSubmit={async (e)=>{e.preventDefault(); await handleSubscribe();}}>
-              <input id="newsletter-email" type="email" aria-label="email" placeholder="Your email address" value={email} onChange={e=>setEmail(e.target.value)} className="px-3 py-2 border border-gray-300 rounded-l-md w-full sm:w-56 focus:outline-none text-sm" />
-              <button disabled={loading} className="bg-[#444444] text-white px-3 py-2 font-semi-bold rounded-r-md text-sm">{loading ? 'Sending...' : 'Subscribe'}</button>
+            <label htmlFor="newsletter-email" className="text-sm text-[#929292] font-medium block sm:inline">
+              Get the Newsletter
+            </label>
+            <form
+              className="flex items-center mt-2 sm:mt-0"
+              onSubmit={async (error) => {
+                error.preventDefault();
+                await handleSubscribe();
+              }}
+            >
+              <input id="newsletter-email" type="email" aria-label="email" placeholder="Your email address" value={email} onChange={(e) => setEmail(e.target.value)} className="px-3 py-2 border border-gray-300 rounded-l-md w-full sm:w-56 focus:outline-none text-sm" />
+              <button disabled={loading} className="bg-[#444444] text-white px-3 py-2 font-semi-bold rounded-r-md text-sm">
+                {loading ? "Sending..." : "Subscribe"}
+              </button>
             </form>
             {status && <div className="mt-2 text-sm text-[#444444]">{status}</div>}
           </div>
         </div>
 
         <div className="mt-6">
-          <hr className="mx-auto" style={{width: '100%', borderTop: '1px solid #EBEBEB'}} />
+          <hr className="mx-auto" style={{ width: "100%", borderTop: "1px solid #EBEBEB" }} />
         </div>
 
         <nav className="max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-center sm:justify-between mt-6 text-center space-y-2 sm:space-y-0" aria-label="Footer navigation">
-          <a href="/about" className="text-sm text-[#7A7A7A] hover:text-[#444444]">About Us</a>
-          <span aria-hidden="true" className="mx-2 text-[#7A7A7A] hidden sm:inline">|</span>
-          <a href="/blog" className="text-sm text-[#7A7A7A] hover:text-[#444444]">Blog</a>
-          <span aria-hidden="true" className="mx-2 text-[#7A7A7A] hidden sm:inline">|</span>
-          <a href="/contact" className="text-sm text-[#7A7A7A] hover:text-[#444444]">Contact Us</a>
+          <a href="/about" className="text-sm text-[#7A7A7A] hover:text-[#444444]">
+            About Us
+          </a>
+          <span aria-hidden="true" className="mx-2 text-[#7A7A7A] hidden sm:inline">
+            |
+          </span>
+          <a href="/blog" className="text-sm text-[#7A7A7A] hover:text-[#444444]">
+            Blog
+          </a>
+          <span aria-hidden="true" className="mx-2 text-[#7A7A7A] hidden sm:inline">
+            |
+          </span>
+          <a href="/contact" className="text-sm text-[#7A7A7A] hover:text-[#444444]">
+            Contact Us
+          </a>
         </nav>
 
         <div className="mt-6">
-          <hr className="mx-auto" style={{width: '50px', borderTop: '1px solid #EBEBEB'}} />
+          <hr className="mx-auto" style={{ width: "50px", borderTop: "1px solid #EBEBEB" }} />
         </div>
 
         <div className="mt-6 text-center text-[12px] text-[#929292]">
-          Hvidovrevej 44, 2610 Rødovre, Denmark<br />
+          Hvidovrevej 44, 2610 Rødovre, Denmark
+          <br />
           Copyright &copy; IOIMachines. All rights reserved.
         </div>
       </div>

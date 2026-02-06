@@ -10,8 +10,8 @@ export default function AdminLogin() {
   const [existingToken] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("adminToken") : null));
   if (existingToken) return <Navigate to="/" replace />;
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const submit = async (event) => {
+    event.preventDefault();
     setError("");
     if (!email || !password) {
       setError("E-mail and Password required");
@@ -25,13 +25,13 @@ export default function AdminLogin() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       })
-      const ct = res.headers.get('content-type') || ''
+      const content = res.headers.get('content-type') || ''
       if (!res.ok) {
         let msg = await res.text()
-        try { if (ct.includes('application/json')) msg = JSON.parse(msg).error || JSON.parse(msg) } catch (e) {}
+        try { if (content.includes('application/json')) msg = JSON.parse(msg).error || JSON.parse(msg) } catch (error) {}
         throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg))
       }
-      const data = ct.includes('application/json') ? await res.json() : null
+      const data = content.includes('application/json') ? await res.json() : null
       const token = data && data.token
       if (!token) throw new Error('no token in response')
       localStorage.setItem('adminToken', token)
@@ -50,9 +50,9 @@ export default function AdminLogin() {
         <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Admin Login</h2>
         <form onSubmit={submit}>
           <label className="block text-sm font-medium text-gray-700">E-mail</label>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-3 text-sm" type="email" />
+          <input value={email} onChange={(event) => setEmail(event.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-3 text-sm" type="email" />
           <label className="block text-sm font-medium text-gray-700">Password</label>
-          <input value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-3 text-sm" type="password" />
+          <input value={password} onChange={(event) => setPassword(event.target.value)} className="mt-1 mb-3 w-full border rounded px-3 py-3 text-sm" type="password" />
           {error && <div className="text-red-600 text-sm mb-3">{error}</div>}
           <button type="submit" disabled={loading} className="w-full bg-[#444444] text-white py-3 rounded text-sm">
             {loading ? "Logging in..." : "Login"}

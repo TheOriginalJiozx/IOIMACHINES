@@ -7,8 +7,8 @@ export default function ContactCase() {
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState("");
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setStatus("");
     if (!name.trim() || !email.trim() || !message.trim()) {
       setStatus("Please fill all fields");

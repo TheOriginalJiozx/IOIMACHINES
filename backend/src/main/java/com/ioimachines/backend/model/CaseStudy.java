@@ -23,18 +23,27 @@ public class CaseStudy {
     private String title;
 
     @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "content_json", columnDefinition = "TEXT")
     private String contentJson;
+
+    @Column(name = "solution_title")
+    private String solutionTitle;
+
+    @Lob
+    @Column(name = "solution_content_json", columnDefinition = "TEXT")
+    private String solutionContentJson;
 
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
 
     public CaseStudy() {}
 
-    public CaseStudy(String slug, String title, String heroImage, String contentJson) {
+    public CaseStudy(String slug, String title, String contentJson, String solutionTitle, String solutionContentJson) {
         this.slug = slug;
         this.title = title;
         this.contentJson = contentJson;
+        this.solutionTitle = solutionTitle;
+        this.solutionContentJson = solutionContentJson;
         this.createdAt = Instant.now();
     }
 
@@ -49,6 +58,12 @@ public class CaseStudy {
 
     public String getContentJson() { return contentJson; }
     public void setContentJson(String contentJson) { this.contentJson = contentJson; }
+
+    public String getSolutionTitle() { return solutionTitle; }
+    public void setSolutionTitle(String solutionTitle) { this.solutionTitle = solutionTitle; }
+
+    public String getSolutionContentJson() { return solutionContentJson; }
+    public void setSolutionContentJson(String solutionContentJson) { this.solutionContentJson = solutionContentJson; }
 
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }

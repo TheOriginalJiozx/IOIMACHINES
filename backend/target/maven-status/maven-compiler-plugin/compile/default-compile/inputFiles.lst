@@ -1,7 +1,15 @@
 C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\Application.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\config\WebConfig.java
 C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\controller\AdminsController.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\controller\CaseStudyController.java
 C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\controller\ContactController.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\controller\NewsletterController.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\controller\UploadController.java
 C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\model\Admins.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\model\CaseStudy.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\model\NewsletterSubscriber.java
 C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\repository\AdminRepository.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\repository\CaseStudyRepository.java
+C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\repository\NewsletterSubscriberRepository.java
 C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\service\EmailService.java
 C:\Users\omara\OneDrive\Skrivebord\IOIMACHINES\backend\src\main\java\com\ioimachines\backend\util\AdminSessionStore.java
