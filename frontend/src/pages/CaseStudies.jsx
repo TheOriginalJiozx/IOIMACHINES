@@ -238,6 +238,7 @@ export default function CaseStudies() {
                             Block #{index + 1} — <span className="font-mono">{block.type}</span>
                           </div>
                             {block.type === "paragraph" && (
+                            <>
                             <textarea
                               value={block.text || ""}
                               onChange={(event) => {
@@ -254,6 +255,62 @@ export default function CaseStudies() {
                               rows={4}
                               className="w-full p-2 border rounded text-sm font-mono"
                             />
+                            <div className="mt-2 flex gap-2">
+                              <button
+                                className="px-2 py-1 rounded border text-sm"
+                                onClick={() => {
+                                  const id = block._id;
+                                  setEditingBlocks((prev) => {
+                                    const arr = (prev || []).slice();
+                                    const idx = arr.findIndex((b) => b._id === id);
+                                    if (idx <= 0) return prev;
+                                    const tmp = arr[idx - 1];
+                                    arr[idx - 1] = arr[idx];
+                                    arr[idx] = tmp;
+                                    return arr;
+                                  });
+                                }}
+                                disabled={index === 0}
+                              >
+                                Move up
+                              </button>
+                              <button
+                                className="px-2 py-1 rounded border text-sm"
+                                onClick={() => {
+                                  const id = block._id;
+                                  setEditingBlocks((prev) => {
+                                    const arr = (prev || []).slice();
+                                    const idx = arr.findIndex((b) => b._id === id);
+                                    if (idx === -1 || idx >= arr.length - 1) return prev;
+                                    const tmp = arr[idx + 1];
+                                    arr[idx + 1] = arr[idx];
+                                    arr[idx] = tmp;
+                                    return arr;
+                                  });
+                                }}
+                                disabled={index >= (editingBlocks ? editingBlocks.length - 1 : 0)}
+                              >
+                                Move down
+                              </button>
+                              <button
+                                className="px-2 py-1 rounded border text-sm"
+                                onClick={() => {
+                                  const id = editingBlocks && editingBlocks[index] && editingBlocks[index]._id;
+                                  if (!id) {
+                                    setEditingBlocks((prev) => {
+                                      const copy = (prev || []).slice();
+                                      copy.splice(index, 1);
+                                      return copy;
+                                    });
+                                    return;
+                                  }
+                                  setEditingBlocks((prev) => (prev || []).filter((b) => b._id !== id));
+                                }}
+                              >
+                                Remove block
+                              </button>
+                            </div>
+                            </>
                           )}
                           {block.type === "image" && (
                             <div className="grid grid-cols-1 gap-2">
@@ -634,7 +691,10 @@ export default function CaseStudies() {
                               { _id: genId(), type: "image", src: "", alt: "", _autoAlt: true },
                               { _id: genId(), type: "paragraph", text: "" },
                             ]);
-                            setEditingSolutionBlocks([{ _id: genId(), type: "paragraph", text: "" }]);
+                            setEditingSolutionBlocks([
+                              { _id: genId(), type: "image", src: "", alt: "", _autoAlt: true },
+                              { _id: genId(), type: "paragraph", text: "" },
+                            ]);
                             setIsEditing(true);
                           }}
                         >
