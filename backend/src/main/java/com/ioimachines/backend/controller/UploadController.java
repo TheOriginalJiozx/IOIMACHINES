@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class UploadController {
 
-    @Value("${file.upload-dir}")
+    @Value("${file.upload-dir:uploads}")
     private String uploadDir;
     @Value("${file.public-base-url:}")
     private String publicBaseUrl;

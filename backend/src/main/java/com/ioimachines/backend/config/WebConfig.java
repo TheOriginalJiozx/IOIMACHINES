@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    @Value("${file.upload-dir}")
+    @Value("${file.upload-dir:uploads}")
     private String uploadDirectory;
     @Value("${file.public-base-url:}")
     private String publicBaseUrl;
