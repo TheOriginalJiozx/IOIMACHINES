@@ -111,7 +111,7 @@ export default function CaseStudies() {
       }
       if (changed2) setEditingSolutionBlocks(copy2);
     }
-  }, [titleEditor]);
+  }, [titleEditor, editingBlocks, editingSolutionBlocks]);
 
   function blocksToPlainText(content) {
     if (!content && content !== "") return "";
