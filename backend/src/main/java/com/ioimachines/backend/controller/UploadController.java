@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,6 +24,8 @@ public class UploadController {
 
     @Value("${file.upload-dir}")
     private String uploadDir;
+    @Value("${file.public-base-url:}")
+    private String publicBaseUrl;
 
     @PostMapping("/uploads")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -58,10 +61,19 @@ public class UploadController {
             Path target = dirPath.resolve(name);
             Files.copy(file.getInputStream(), target);
 
-            String urlPath = "/" + dirPath.getFileName().toString() + "/" + name; // e.g. /uploads/uuid.jpg
+            String fileDownloadUri;
+            if (publicBaseUrl != null && !publicBaseUrl.isBlank()) {
+                String base = publicBaseUrl.endsWith("/") ? publicBaseUrl.substring(0, publicBaseUrl.length() - 1) : publicBaseUrl;
+                fileDownloadUri = base + "/" + name;
+            } else {
+                fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/uploads/")
+                        .path(name)
+                        .toUriString();
+            }
             Map<String, Object> resp = new HashMap<>();
             resp.put("ok", true);
-            resp.put("url", urlPath);
+            resp.put("url", fileDownloadUri);
             resp.put("path", target.toString());
             return ResponseEntity.ok(resp);
         } catch (IOException e) {

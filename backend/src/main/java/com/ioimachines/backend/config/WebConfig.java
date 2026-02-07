@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 public class WebConfig implements WebMvcConfigurer {
     @Value("${file.upload-dir}")
     private String uploadDirectory;
+    @Value("${file.public-base-url:}")
+    private String publicBaseUrl;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
@@ -21,7 +23,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        if (publicBaseUrl != null && !publicBaseUrl.isBlank()) {
+            return;
+        }
+
         String path = "file:" + (uploadDirectory.endsWith("/") ? uploadDirectory : uploadDirectory + "/");
-        registry.addResourceHandler("../frontend/public/uploads/**").addResourceLocations(path);
+        registry.addResourceHandler("/uploads/**").addResourceLocations(path);
     }
 }
