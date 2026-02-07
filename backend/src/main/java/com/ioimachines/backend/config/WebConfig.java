@@ -15,18 +15,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(false);
+            .allowedOrigins(
+                "https://jolly-moss-0569eee03.4.azurestaticapps.net",
+                "http://localhost:3000"
+            )
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedHeaders("*")
+            .allowCredentials(false);
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        if (publicBaseUrl != null && !publicBaseUrl.isBlank()) {
-            return;
-        }
-
         String path = "file:" + (uploadDirectory.endsWith("/") ? uploadDirectory : uploadDirectory + "/");
         registry.addResourceHandler("/uploads/**").addResourceLocations(path);
     }

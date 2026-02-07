@@ -23,36 +23,22 @@ import java.util.UUID;
 public class UploadController {
 
     @Value("${file.upload-dir:uploads}")
-    private String uploadDir;
-    @Value("${file.public-base-url:}")
-    private String publicBaseUrl;
+    private String uploadDirectory;
 
     @PostMapping("/uploads")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) return ResponseEntity.badRequest().body(Map.of("error", "file required"));
         try {
             String original = StringUtils.cleanPath(file.getOriginalFilename());
-            String ext = "";
-            int idx = original.lastIndexOf('.');
-            if (idx >= 0) ext = original.substring(idx);
-            String name = UUID.randomUUID().toString() + ext;
+            String external = "";
+            int index = original.lastIndexOf('.');
+            if (index >= 0) external = original.substring(index);
+            String name = UUID.randomUUID().toString() + external;
 
-            Path dirPath = Paths.get(uploadDir);
+            Path dirPath = Paths.get(uploadDirectory);
             if (!dirPath.isAbsolute()) {
                 Path cwd = Paths.get("").toAbsolutePath();
-                Path candidate = cwd;
-                Path resolved = null;
-                try {
-                    while (candidate != null) {
-                        if (Files.exists(candidate.resolve("frontend"))) {
-                            resolved = candidate.resolve(uploadDir).normalize();
-                            break;
-                        }
-                        candidate = candidate.getParent();
-                    }
-                } catch (Exception ignored) {}
-                if (resolved != null) dirPath = resolved;
-                else dirPath = cwd.resolve(uploadDir).normalize();
+                dirPath = cwd.resolve(uploadDirectory).normalize();
             } else {
                 dirPath = dirPath.toAbsolutePath().normalize();
             }
@@ -61,16 +47,10 @@ public class UploadController {
             Path target = dirPath.resolve(name);
             Files.copy(file.getInputStream(), target);
 
-            String fileDownloadUri;
-            if (publicBaseUrl != null && !publicBaseUrl.isBlank()) {
-                String base = publicBaseUrl.endsWith("/") ? publicBaseUrl.substring(0, publicBaseUrl.length() - 1) : publicBaseUrl;
-                fileDownloadUri = base + "/" + name;
-            } else {
-                fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/uploads/")
-                        .path(name)
-                        .toUriString();
-            }
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/uploads/")
+                    .path(name)
+                    .toUriString();
             Map<String, Object> resp = new HashMap<>();
             resp.put("ok", true);
             resp.put("url", fileDownloadUri);
