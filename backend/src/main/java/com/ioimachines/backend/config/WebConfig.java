@@ -15,13 +15,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-            .allowedOrigins(
-                "https://jolly-moss-0569eee03.4.azurestaticapps.net",
-                "http://localhost:3000"
-            )
+            .allowedOrigins("http://localhost:5173", "https://jolly-moss-0569eee03.4.azurestaticapps.net")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
-            .allowCredentials(false);
+            .allowCredentials(true);
     }
 
     @Override

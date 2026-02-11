@@ -50,7 +50,7 @@ export default function CaseStudies() {
       setLoading(true);
       setError("");
       try {
-        const API_BASE = process.env.REACT_APP_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
+        const API_BASE = import.meta.env.VITE_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
         const res = await fetch(`${API_BASE}/case-studies`);
         if (!res.ok) throw new Error(`Status ${res.status}`);
         const json = await res.json();
@@ -315,39 +315,46 @@ export default function CaseStudies() {
                           {block.type === "image" && (
                             <div className="grid grid-cols-1 gap-2">
                               <label className="text-xs text-gray-600">Replace image (upload)</label>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(event) => {
-                                  const file = event.target.files && event.target.files[0];
-                                  if (!file) return;
-                                  const id = block._id;
-                                  try {
-                                    const preview = URL.createObjectURL(file);
-                                    let alt = "";
-                                    if (titleEditor && titleEditor.trim()) alt = `${titleEditor} image`;
-                                    else alt = (file.name || "").replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ");
-                                    setEditingBlocks((previous) => {
-                                      const array = (previous || []).slice();
-                                      const index = array.findIndex((block) => block._id === id);
-                                      if (index === -1) return previous;
-                                      array[index] = { ...array[index], _file: file, src: preview, alt, _autoAlt: true };
-                                      return array;
-                                    });
-                                  } catch (error) {
-                                    let alt = "";
-                                    if (titleEditor && titleEditor.trim()) alt = `${titleEditor} image`;
-                                    else alt = (file.name || "").replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ");
-                                    setEditingBlocks((previous) => {
-                                      const array = (previous || []).slice();
-                                      const index = array.findIndex((block) => block._id === id);
-                                      if (index === -1) return previous;
-                                      array[index] = { ...array[index], _file: file, alt, _autoAlt: true };
-                                      return array;
-                                    });
-                                  }
-                                }}
-                              />
+                              <div className="flex items-center gap-2">
+                                <label className="bg-white border px-3 py-1 rounded text-sm cursor-pointer">
+                                  Choose image
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(event) => {
+                                      const file = event.target.files && event.target.files[0];
+                                      if (!file) return;
+                                      const id = block._id;
+                                      try {
+                                        const preview = URL.createObjectURL(file);
+                                        let alt = "";
+                                        if (titleEditor && titleEditor.trim()) alt = `${titleEditor} image`;
+                                        else alt = (file.name || "").replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ");
+                                        setEditingBlocks((previous) => {
+                                          const array = (previous || []).slice();
+                                          const index = array.findIndex((block) => block._id === id);
+                                          if (index === -1) return previous;
+                                          array[index] = { ...array[index], _file: file, src: preview, alt, _autoAlt: true };
+                                          return array;
+                                        });
+                                      } catch (error) {
+                                        let alt = "";
+                                        if (titleEditor && titleEditor.trim()) alt = `${titleEditor} image`;
+                                        else alt = (file.name || "").replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ");
+                                        setEditingBlocks((previous) => {
+                                          const array = (previous || []).slice();
+                                          const index = array.findIndex((block) => block._id === id);
+                                          if (index === -1) return previous;
+                                          array[index] = { ...array[index], _file: file, alt, _autoAlt: true };
+                                          return array;
+                                        });
+                                      }
+                                    }}
+                                    className="hidden"
+                                  />
+                                </label>
+                                <div className="text-sm text-gray-600">or paste URL below</div>
+                              </div>
 
                               <label className="text-xs text-gray-600">Or image URL</label>
                               <input
@@ -536,7 +543,7 @@ export default function CaseStudies() {
 
                       let contentPayload;
                       if (editingBlocks && Array.isArray(editingBlocks)) {
-                        const API_BASE = process.env.REACT_APP_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
+                        const API_BASE = import.meta.env.VITE_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
                         const blocksCopy = editingBlocks.slice();
                         for (let i = 0; i < blocksCopy.length; i++) {
                           const block = blocksCopy[i];
@@ -574,7 +581,7 @@ export default function CaseStudies() {
 
                       let solutionPayload;
                       if (editingSolutionBlocks && Array.isArray(editingSolutionBlocks)) {
-                        const API_BASE = process.env.REACT_APP_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
+                        const API_BASE = import.meta.env.VITE_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
                         const solCopy = editingSolutionBlocks.slice();
                         for (let i = 0; i < solCopy.length; i++) {
                           const block = solCopy[i];
@@ -611,7 +618,7 @@ export default function CaseStudies() {
 
                       setSaving(true);
                       try {
-                        const API_BASE = process.env.REACT_APP_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
+                        const API_BASE = import.meta.env.VITE_API_BASE || "https://ioimachines-cqbjftddhcfphebp.canadacentral-01.azurewebsites.net/api";
                         const headers = { "Content-Type": "application/json" };
                         if (adminToken) headers["Authorization"] = "Bearer " + adminToken;
                           const payload = { content: contentPayload, solution_content_json: solutionPayload, title: titleEditor, solution_title: solutionTitleEditor };
@@ -1004,7 +1011,7 @@ export default function CaseStudies() {
                   }
                   disabled={isEditing}
                   aria-disabled={isEditing}
-                  className={`flex-none w-20 text-center p-1 rounded relative ring-offset-6 ring-offset-white ${selectedIndex === study ? "ring-6 ring-indigo-400 z-50" : "opacity-80 hover:opacity-100"} ${isEditing ? "cursor-not-allowed opacity-50" : ""}`}
+                  className={`flex-none w-20 text-center p-1 rounded relative ring-offset-6 ring-offset-white ${selectedIndex === study ? "z-50" : "opacity-80 hover:opacity-100"} ${isEditing ? "cursor-not-allowed opacity-50" : ""}`}
                   aria-pressed={selectedIndex === study}
                 >
                   <div className={`w-full h-20 rounded overflow-hidden flex items-center justify-center ${selectedIndex === study ? "bg-[#0471AB]" : "bg-gray-100"}`}>
