@@ -1,7 +1,7 @@
 package com.ioimachines.backend.controller;
 
-import com.ioimachines.backend.model.ContactSection;
-import com.ioimachines.backend.repository.ContactSectionRepository;
+import com.ioimachines.backend.model.SiteSection;
+import com.ioimachines.backend.repository.SiteSectionRepository;
 import com.ioimachines.backend.util.AdminSessionStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +12,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/sections")
-public class ContactSectionController {
+public class SiteSectionController {
 
     @Autowired
-    private ContactSectionRepository repo;
+    private SiteSectionRepository repo;
     @Autowired
     private AdminSessionStore sessionStore;
 
@@ -59,9 +59,9 @@ public class ContactSectionController {
         String addressJson = address == null ? null : (address instanceof String ? (String)address : address.toString());
         String timingJson = timing == null ? null : (timing instanceof String ? (String)timing : timing.toString());
 
-        java.util.Optional<ContactSection> existingOpt = repo.findByKey(key);
+        java.util.Optional<SiteSection> existingOpt = repo.findByKey(key);
         if (existingOpt.isPresent()) {
-            ContactSection s = existingOpt.get();
+            SiteSection s = existingOpt.get();
             if (title != null) s.setTitle(title);
             if (contentJson != null) s.setContentJson(contentJson);
             if (email != null) s.setEmailJson(email instanceof String ? (String)email : email.toString());
@@ -71,7 +71,7 @@ public class ContactSectionController {
             repo.save(s);
             return ResponseEntity.ok(Map.of("ok", true));
         } else {
-            ContactSection s = new ContactSection(
+            SiteSection s = new SiteSection(
                 key,
                 title == null ? "" : title,
                 contentJson == null ? "" : contentJson,

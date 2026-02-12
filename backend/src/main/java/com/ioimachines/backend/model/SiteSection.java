@@ -5,7 +5,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "site_sections", uniqueConstraints = {@UniqueConstraint(columnNames = {"section_key"})})
-public class ContactSection {
+public class SiteSection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,9 +37,9 @@ public class ContactSection {
 
     private Instant createdAt = Instant.now();
 
-    public ContactSection() {}
+    public SiteSection() {}
 
-    public ContactSection(String key, String title, String contentJson, String emailJson, String phoneJson, String addressJson, String timingJson) {
+    public SiteSection(String key, String title, String contentJson, String emailJson, String phoneJson, String addressJson, String timingJson) {
         this.key = key;
         this.title = title;
         this.contentJson = contentJson;

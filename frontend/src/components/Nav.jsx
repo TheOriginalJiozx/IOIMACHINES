@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAppState } from "../state/AppState";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from '../assets/ioimachines_logo.png'
 
@@ -15,6 +16,7 @@ export default function Nav() {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const { adminToken, setToken } = useAppState();
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -59,23 +61,12 @@ export default function Nav() {
   }, [location]);
 
   useEffect(() => {
-    const check = () => setIsAdmin(!!localStorage.getItem("adminToken"));
-    check();
-    const onStorage = (event) => {
-      if (event.key === "adminToken") check();
-    };
-    const onCustom = () => check();
-    window.addEventListener("storage", onStorage);
-    window.addEventListener("admin-auth-changed", onCustom);
-    return () => {
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener("admin-auth-changed", onCustom);
-    };
-  }, []);
+    // keep local isAdmin in sync with AppState adminToken
+    setIsAdmin(!!adminToken);
+  }, [adminToken]);
 
   function logout() {
-    localStorage.removeItem("adminToken");
-    window.dispatchEvent(new Event("admin-auth-changed"));
+    setToken(null);
     setActive(0);
     navigate("/");
   }

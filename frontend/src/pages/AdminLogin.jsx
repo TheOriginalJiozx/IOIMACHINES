@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
+import { useAppState } from "../state/AppState";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -7,8 +8,8 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [existingToken] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("adminToken") : null));
-  if (existingToken) return <Navigate to="/" replace />;
+  const { adminToken, setToken } = useAppState();
+  if (adminToken) return <Navigate to="/" replace />;
 
   const submit = async (event) => {
     event.preventDefault();
@@ -34,8 +35,7 @@ export default function AdminLogin() {
       const data = content.includes('application/json') ? await res.json() : null
       const token = data && data.token
       if (!token) throw new Error('no token in response')
-      localStorage.setItem('adminToken', token)
-      window.dispatchEvent(new Event('admin-auth-changed'))
+      setToken(token)
       navigate('/')
     } catch (error) {
       setError(error.message || "Login failed");
@@ -45,7 +45,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4" aria-label="Admin login page">
       <div className="w-full max-w-sm sm:max-w-md bg-[#FCFCFF] rounded-lg shadow p-6 sm:p-8">
         <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Admin Login</h2>
         <form onSubmit={submit}>

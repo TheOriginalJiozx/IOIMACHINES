@@ -47,7 +47,7 @@ export default function Services() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-[#444444] font-sans">
+    <div className="min-h-screen bg-white text-[#444444] font-sans" aria-label="Services page">
       <section className="relative w-full">
         <div className="w-full h-full md:h-200 bg-gray-100 overflow-hidden">
           <img src="/services.jpg" alt="hero" className="object-cover w-full h-full" />

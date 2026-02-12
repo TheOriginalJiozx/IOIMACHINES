@@ -32,7 +32,7 @@ export default function IPCoreLicensing() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-[#444444] font-sans">
+    <div className="min-h-screen bg-white text-[#444444] font-sans" aria-label="IP core licensing page">
       <section className="relative w-full">
         <div className="w-full h-80 sm:h-96 md:h-[34rem] bg-gray-100 overflow-hidden">
           <img src="/ipcorelicensing_img1.jpg" alt="hero" className="object-cover w-full h-full" />

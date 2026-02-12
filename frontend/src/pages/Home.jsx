@@ -51,8 +51,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-[#444444] font-sans">
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid md:grid-cols-2 gap-6 items-center">
+    <div className="min-h-screen bg-white text-[#444444] font-sans" aria-label="Home page">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid md:grid-cols-2 gap-6 items-center" aria-label="Home hero">
         <div>
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#444444] leading-tight">Smarter Vision for Smarter Machines</h1>
           <p className="text-sm sm:text-base mt-4 text-gray-600 max-w-xl whitespace-pre-line">{cards[0].desc}</p>

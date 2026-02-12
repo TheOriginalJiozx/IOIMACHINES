@@ -4,6 +4,7 @@ import Features from "../components/Features";
 import GetAdvice from "../components/GetAdvice";
 import RequestConsultation from "../components/RequestConsultation";
 import { useState } from "react";
+import { useAppState } from "../state/AppState";
 import { genId, blocksToPlainText, renderBlock } from "../lib/blocks.jsx";
 
 export default function Contact() {
@@ -14,7 +15,7 @@ export default function Contact() {
   }, []);
 
   const [section, setSection] = useState(null);
-  const [adminToken, setAdminToken] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("adminToken") : null));
+  const { adminToken } = useAppState();
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editAddress, setEditAddress] = useState("");
@@ -129,10 +130,10 @@ export default function Contact() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#444444] font-sans">
+    <div className="min-h-screen bg-white text-[#444444] font-sans" aria-label="Contact page">
       <div className="top-0 left-0 right-0 bg-[#EBEBEB] z-50 border-b"></div>
 
-      <section className="bg-white">
+      <section className="bg-white" aria-label="Contact intro section">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>

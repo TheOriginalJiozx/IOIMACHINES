@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAppState } from "../state/AppState";
 import ContactCase from "../components/ContactCase";
 import Features from "../components/Features";
 import GetAdvice from "../components/GetAdvice";
@@ -17,7 +18,7 @@ export default function CaseStudies() {
   const [titleEditor, setTitleEditor] = useState("");
   const [solutionTitleEditor, setSolutionTitleEditor] = useState("");
   const [saving, setSaving] = useState(false);
-  const [adminToken, setAdminToken] = useState(null);
+  const { adminToken } = useAppState();
   const [isCreating, setIsCreating] = useState(false);
   const genId = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
 
@@ -41,10 +42,7 @@ export default function CaseStudies() {
       window.setPageTitle("Case Studies");
     }
 
-    if (typeof window !== "undefined") {
-      const t = window.localStorage?.getItem?.("adminToken") || window.ADMIN_TOKEN || null;
-      if (t) setAdminToken(t);
-    }
+    // adminToken now comes from AppState provider
 
     async function load() {
       setLoading(true);
@@ -192,7 +190,7 @@ export default function CaseStudies() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#444444] font-sans">
+    <div className="min-h-screen bg-white text-[#444444] font-sans" aria-label="Case studies page">
       <section className="relative w-full mb-16">
         <div className="w-full h-80 sm:h-96 md:h-[34rem] bg-gray-100 overflow-hidden">
           <img src="/success_stories.jpg" alt="Case hero" className="object-cover w-full h-full" />
